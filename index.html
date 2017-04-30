@@ -1,0 +1,488 @@
+﻿<!DOCTYPE html>
+<html ng-app="ketApp">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>KET</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="image/png" href="imgs/logo.png" />
+
+    <script src="Libraries/jquery-3.1.1.min.js"></script>
+    <script src="Libraries/bootstrap.min.js"></script>
+    <script src="Libraries/angular.js"></script>
+    <script src="Libraries/angular_route.js"></script>
+    
+
+    <link rel="stylesheet" href="Libraries/bootstrap.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    
+    <script src="Libraries/angular-scroll.js"></script>
+    <script src="customDirectives.js"></script>
+    <script src="customFilters.js"></script>
+
+
+    <script type="text/ng-template" id="teamMemberTemplate">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+            <div class="team_member_wrapper">
+                <div class="img_wrapper">
+                    <img src="{{memberInfo.img}}" alt="" />
+                    <div class="img_desc">
+                        <h3 class="img_name">{{memberInfo.name}}</h3>
+                        <h4 class="img_job">{{memberInfo.job}}</h4>
+                    </div>
+                </div>
+                <p class="team_member_desc">
+                    {{memberInfo.desc}}
+                </p>
+                <div class="socials">
+                    <div class="socials_item" ng-mouseenter="changeColorIcon($event,'facebook')" ng-mouseleave="changeColorIcon($event,'facebook')">
+                        <i class="fa fa-facebook" aria-hidden="true" ></i>
+                    </div>
+                    <div class="socials_item" ng-mouseenter="changeColorIcon($event,'twitter')" ng-mouseleave="changeColorIcon($event,'twitter')">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </div>
+                    <div class="socials_item" ng-mouseenter="changeColorIcon($event,'google')" ng-mouseleave="changeColorIcon($event,'google')" >
+                        <i class="fa fa-google-plus" aria-hidden="true"></i>
+                    </div>
+                    <div class="socials_item" ng-mouseenter="changeColorIcon($event,'web')"  ng-mouseleave="changeColorIcon($event,'web')">
+                        <i class="fa fa-dribbble" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script>
+        var app = angular.module('ketApp', ['ngRoute', 'customDirectives', 'customFilters', 'duScroll']);
+        app.factory('createHoverElement', function () {
+            return function (event, item) {
+                var text = item.title;
+                var subText = item.type;
+                var div = document.createElement('div');
+                var p = document.createElement('p');
+                p.innerText = subText;
+                div.innerText = text;
+                div.style.width = event.target.offsetWidth + 'px';
+                div.style.height = event.target.offsetHeight + 'px';
+                div.style.marginTop = -event.target.offsetHeight + 'px';
+                div.style.paddingTop = event.target.offsetHeight / 2 - 23 + 'px'
+                div.style.marginleft = event.target.offsetWidth / 2 + 'px';
+
+                div.classList.add('active_work_filter');
+                event.currentTarget.appendChild(div);
+                div.appendChild(p);
+            }
+        });
+        app.controller('mainCtrl', ['$scope', '$http', '$location', '$document', 'createHoverElement', function ($scope, $http, $location, $document, createHoverElement) {
+            //Data
+            $scope.slogan = 'we make websites';
+            $scope.memberInfo = {
+                name: "John Doe",
+                job: "Graphic Designer",
+                desc: "Eum cu tantas legere complectitur,hinc utamur ea eam.Eum patrioque mnesarchum eu.",
+                img: "imgs/test_team.png",
+                socials: ['#', '#', '#', '#']
+            }
+            $scope.stats = [
+                { img: 'imgs/icons/portfolio.png', counter: 3054, title: 'COMPLETED PROJECTS' },
+                { img: 'imgs/icons/mouse.png', counter: 7234873, title: 'CLICK PRESED' },
+                { img: 'imgs/icons/message.png', counter: 4670, title: 'MAILS SENTED & RECIVED' },
+                { img: 'imgs/icons/jokes.png', counter: 939, title: 'JOKES TOLDS' },
+            ];
+            $scope.filterTypes = [
+                'all','web','photography','graphic design'
+            ];
+            $scope.filterPhotos = [
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'graphic design' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'web' },
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'photography' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'web' },
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'photography' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'photography' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'photography' },
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'web' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'graphic design' },
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'web' },
+             { img: 'imgs/portfolio/lightPhotoTest.png', title: 'Sample image', type: 'graphic design' },
+             { img: 'imgs/portfolio/photoTest.png', title: 'Sample image', type: 'web' },
+
+            ];
+
+            //filter
+            $scope.currentFilter = 'all';
+            $scope.setCurrentFilter = function (filter) {
+                $scope.currentFilter = filter;
+            }
+            $scope.showImageData = function (event, item) {
+                createHoverElement(event, item);
+            }
+            $scope.hideData = function (event) {
+                var element = event.currentTarget;
+                element.removeChild(element.lastElementChild);
+            }
+           
+            //active_service
+            $scope.serviceActive = 'web design';
+            $scope.changeActiveService = function (itemNum,typeActive) {
+                $scope.serviceActive = typeActive;
+                var indexItem = --itemNum;
+                var services = document.getElementsByClassName('service_item');
+                for (var i = 0; i < services.length; i++) {
+                    var element = angular.element(services[i]);
+                    element.removeClass();
+                    element.addClass('service_item');
+                    if (i == indexItem) {
+                        if (indexItem == 0) {
+                            element.addClass('service_top_right_line');
+                        } else if (indexItem == services.length - 1) {
+                            element.addClass('service_top_left_line');
+                        } else {
+                            element.addClass('service_left_right_top_line');
+                        }
+                    } else {
+                        element.addClass('service_top_bottom_line');
+                    }
+
+                }
+            }
+
+            //Data_news
+            $scope.convertDate = function (dateRaw) {
+                var date = new Date(dateRaw);
+                return date;
+            }
+            var success = function (response) {
+                $scope.news = response.data;
+            }
+            var error = function (err) {
+                console.log(err.message);
+            }
+            $http.get('data.json').then(success, error);
+            
+            //Form
+            $scope.nameRegex = /^[a-zA-Z]+$/;
+            $scope.emailRegex = /^[a-zA-Z0-9_.@]+$/;
+            $scope.messageRegex = /^[\s\S]{20,}$/;
+            $scope.getError = function (err) {
+                if (err.$error.required)
+                    return 'Field is empty';
+                switch (err.$name) {
+                        case 'name': return 'Invalid name'; break;
+                        case 'email': return 'Invalid email'; break;
+                        case 'message': return 'Min 20 symbols'; break;
+                        default: return 'Error';
+               }
+            }
+            $scope.checkSubmit = function (form) {
+                console.log(form);
+                if (form.$valid) {
+                    alert("Data was sended successfully");
+                }
+                else {
+                    form.name.$dirty = true;
+                    form.email.$dirty = true;
+                    form.message.$dirty = true;
+                    alert('Check all fields');
+                }
+            }
+
+        }]);
+
+        //Route_Config
+        app.controller('newsCtrl', function ($scope, $routeParams,$document) {
+            $scope.id = $routeParams.id;
+            $scope.item = $scope.news[$scope.id - 1];
+            var element = angular.element(document.getElementById('newsLink'));
+            $document.duScrollToElement(element);
+        });
+        app.config(function ($routeProvider) {
+            $routeProvider
+            .when('/',{ templateUrl: 'newsMain.html',})
+            .when('/:id', {
+                templateUrl: 'newsStandalone.html',
+                controller: 'newsCtrl'
+            })
+        });
+    </script>
+
+</head>
+
+<body ng-controller="mainCtrl" ng-cloak >
+
+    <!-- Navigation -->
+    <div class="navbar navbar-fixed-top " id="navPanel" role="navigation">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></button>
+                    <a class="navbar-brand " href="#"><img src="imgs/logo.png" alt="logo"></a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right ">
+                        <li><a href="#homeLink" class="nav_item " id="homeHref" du-smooth-scroll du-scrollspy>Home</a></li>
+                        <li><a href="#serviceLink" class="nav_item" id="serviceHref" offset="100" du-smooth-scroll du-scrollspy>Services</a></li>
+                        <li><a href="#portfolioLink" class="nav_item" id="portfolioHref" offset="100" du-smooth-scroll du-scrollspy>Portfolio</a></li>
+                        <li><a href="#aboutLink" class="nav_item" id="aboutHref" du-smooth-scroll du-scrollspy>About</a></li>
+                        <li><a href="#newsLink" class="nav_item" id="clientHref" du-smooth-scroll offset="100" du-scrollspy>News</a></li>
+                        <li><a href="#contactLink" class="nav_item" id="contactHref" du-smooth-scroll offset="100" du-scrollspy>Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header_Image -->
+    <header id="homeLink">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1 class="big_extralight_white">{{slogan}}</h1>
+                    <button class="white_block_btn" href="#portfolioLink" du-smooth-scroll offset="100">start tour</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Our_Servics -->
+    <section class="our_service" id="serviceLink">
+        <div class="container">
+            <div class="row services_types">
+                <div class="col-md-1 col-sm-1 col-sm-offset-1 col-xs-3 col-xs-offset-0 col-md-offset-1 no_padding" ng-click="changeActiveService(1,'web design')">
+                    <div class="services_icon">
+                        <img src="imgs/icons/desktop.png" />
+                    </div>
+                    <div class="services_types_title">web design</div>
+                </div>
+                <div class="col-md-1 col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0   col-md-offset-2 no_padding" ng-click="changeActiveService(2,'graphic design')">
+                    <div class="services_icon">
+                        <img src="imgs/icons/pencil.png" />
+                    </div>
+                    <div class="services_types_title">graphic design</div>
+                </div>
+                <div class="col-md-1 col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0  col-md-offset-2 no_padding" ng-click="changeActiveService(3,'programming')">
+                    <div class="services_icon">
+                        <img src="imgs/icons/programming.png" />
+                    </div>
+                    <div class="services_types_title">programming</div>
+                </div>
+                <div class="col-md-1  col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0  col-md-offset-2 no_padding" ng-click="changeActiveService(4,'photography')">
+                    <div class="services_icon">
+                        <img src="imgs/icons/photo.png" />
+                    </div>
+                    <div class="services_types_title">photography</div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-1 col-md-offset-1 col-sm-1 col-sm-offset-1  col-xs-3 no_right_margin_padding no_padding">
+                    <div class="service_top_right_line service_item"></div>
+                </div>
+                <div class="col-md-2 col-sm-2 hidden-xs service_bottom_line "></div>
+                <div class="col-md-1 col-sm-1 col-xs-3 no_margin_padding">
+                    <div class="service_top_bottom_line service_item"></div>
+                </div>
+                <div class="col-md-2 col-sm-2 hidden-xs service_bottom_line"></div>
+                <div class="col-md-1 col-sm-1  col-xs-3 no_margin_padding">
+                    <div class="service_top_bottom_line service_item"></div>
+                </div>
+                <div class="col-md-2 col-sm-2  hidden-xs service_bottom_line"></div>
+                <div class="col-md-1 col-sm-1  col-xs-3 no_left_margin_padding no_padding">
+                    <div class="service_top_bottom_line service_item"></div>
+                </div>
+            </div>
+            <div class="row" ng-switch="serviceActive">
+                <div ng-switch-when="web design" class="col-md-9 col-md-offset-2 service_desc">
+                    Web design Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute i
+                    rure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+                    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                </div>
+                <div ng-switch-when="graphic design" class="col-md-9 col-md-offset-2 service_desc">Graphic design</div>
+                <div ng-switch-when="programming" class="col-md-9 col-md-offset-2 service_desc">Programming</div>
+                <div ng-switch-when="photography" class="col-md-9 col-md-offset-2 service_desc">Photography</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Phone_Responsive -->
+    <section class="phones">
+        <div class="container">
+            <div class="row">
+                <div class="phones_nav">
+                    <div class="col-xs-5 col-xs-offset-1 col-md-5 col-md-offset-1 no_right_margin_padding">
+                        <div class="phones_nav_item">start tour</div>
+                    </div>
+                    <div class="col-xs-5 col-md-5 no_margin_padding  ">
+                        <div class="phones_nav_item phones_nav_item_active">for all devices</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="phones_group">
+                    <div class="col-xs-8 col-xs-offset-2 col-sm-offset-0 col-sm-6 col-md-6 col-md-offset-0 col-lg-offset-1 col-lg-5 ">
+                        <div class="phones_img">
+                            <img src="imgs/phones.png" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="phones_content">
+                            <h2 class="phones_content_title">Fully Responsive</h2>
+                            <p class="phones_content_desc">
+                                Eum cu tantas legere complectitur, hinc utamur ea eam.
+                                Lorem ipsum dolor sit<br /> amet, volumus temporibus definitionem id ius,
+                                vel ut magna timeam appareat,<br /> movet timeam maiorum an ius.<br />
+                                Sea libris dictas lucilius et. Ne cibo urbanitas pri, qui ad populo accusamus.
+                                Quod<br /> congue ea ius, nisl aperiri sit ut.
+
+                            </p>
+                            <div class="phone_content_btn"> 
+                                <a href="#addressLink" du-smooth-scroll >
+                                    <input type="button" value="get now" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section class="portfolio" id="portfolioLink">
+        <head-section head-title="Our Portfolio">
+            Eum cu tantas legere complectitur, hinc utamur ea eam. Eum patrioque mnesarchum eu, diam erant convenire et vis.<br />
+            Et essent evertitur sea, vis cu ubique referrentur, sed eu dicant expetendis.
+        </head-section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <ul class="portfolio_nav">
+                        <li class="portfolio_nav_item" ng-repeat="type in filterTypes"
+                            ng-click="setCurrentFilter(type)" ng-class='{portfolio_nav_item_active:type==currentFilter}'>{{type}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 no_margin_padding" ng-repeat="photo in filterPhotos| portfolioFilter : currentFilter">
+                    <div class="portfolio_item" ng-mouseenter="showImageData($event,photo)" ng-mouseleave="hideData($event)">
+                        <img src="{{photo.img}}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics -->
+    <section class="statistics">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 col-md-3 col-xs-6" ng-repeat="stats_item in stats">
+                    <div count-to="{{stats_item.counter}}" value="{{0}}" duration="3" img-src="{{stats_item.img}}" item-title="{{stats_item.title}}"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team_Members -->
+    <section class="team" id="aboutLink">
+        <div class="container">
+            <div class="row">
+                <head-section head-title="We are the one">
+                    Eum cu tantas legere complectitur,
+                    hinc utamur ea eam. Eum patrioque mnesarchum eu, diam erant convenire et vis. Et essent<br /> evertitur sea,
+                    vis cu ubique referrentur, sed eu dicant expetendis.
+                </head-section>
+            </div>
+            <div class="row">
+                <team-member member-info="memberInfo"></team-member>
+                <team-member member-info="memberInfo"></team-member>
+                <team-member member-info="memberInfo"></team-member>
+                <team-member member-info="memberInfo"></team-member>
+            </div>
+        </div>
+    </section>
+
+    <!-- News -->
+    <section class="news" id="newsLink">
+        <div class="container">
+            <head-section head-title="Check our news">
+                Eum cu tantas legere complectitur, hinc utamur ea eam. Eum patrioque mnesarchum eu, diam erant convenire et vis. Et essent<br />
+                evertitur sea, vis cu ubique referrentur, sed eu dicant expetendis.
+            </head-section>
+            <div ng-view>
+            </div>
+        </div>
+    </section>
+
+    
+    <!-- Contact_Form -->
+    <section class="contact_us" id="contactLink">
+        <head-section head-title="Contact Us" white-text>
+            Eum cu tantas legere complectitur, hinc utamur ea eam. Eum patrioque mnesarchum eu, diam erant convenire et vis.<br />
+            Et essent evertitur sea, vis cu ubique referrentur, sed eu dicant expetendis.
+        </head-section>
+        <div class="container">
+            <form name="contactForm" novalidate ng-submit="checkSubmit(contactForm)" autocomplete="off">
+                <div class="row">
+                    <div class="col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2">
+                        <div class="input_field">
+                            <input type="text" placeholder="Your name here"
+                                   ng-model="name" name="name" ng-pattern="nameRegex" required />
+                            <div class="box_line"></div>
+                            <p ng-show="contactForm.name.$invalid && contactForm.name.$dirty" class="error">{{getError(contactForm.name)}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-5 col-md-4">
+                        <div class="input_field">
+                            <input type="text" placeholder="Your mail here"
+                                   ng-model="email" name="email" ng-pattern="emailRegex" required />
+                            <div class="box_line"></div>
+                            <p ng-show="contactForm.email.$invalid && contactForm.email.$dirty" class="error">{{getError(contactForm.email)}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 ">
+                        <div class="input_field input_field_wide">
+                            <input type="text" placeholder="Your message here"
+                                   ng-model="message" name="message" ng-pattern="messageRegex" required />
+                            <div class="box_line"></div>
+                            <p ng-show="contactForm.message.$invalid && contactForm.message.$dirty " class="error">{{getError(contactForm.message)}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 input_btn_send">
+                        <input type="submit" value="Send Message" ng-disabled="contactForm.name.$invalid && contactForm.name.$dirty || contactForm.email.$invalid && contactForm.email.$dirty || contactForm.message.$invalid && contactForm.message.$dirty" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Address -->
+    <section class="map">
+        <a name="addressLink"></a>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4  ">
+                    <div class="contacts">
+                        Awesome Address 432<br />
+                        ourmail@sometype.com<br />
+                        +321(0)32 123 343 492
+                        <div class="arrow_down"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rights -->
+    <footer>
+        <div class="rights_reserved"> © 2014 - <a href="#homeLink" du-smooth-scroll>Kat</a> All Right Reserved</div>
+    </footer>
+
+</body>
+</html>

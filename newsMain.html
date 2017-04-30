@@ -1,0 +1,18 @@
+﻿<div class="news_list">
+    <div class="row" ng-repeat="news_item in news">
+        <div class="news_list_item">
+            <div class="col-xs-12 col-sm-2 col-md-1  col-md-offset-2">
+                <div class="news_date_month">
+                    <div class="news_date">{{convertDate(news_item.date) | date:'dd'}}</div>
+                    <div class="news_month">{{convertDate(news_item.date) | date:'MMMM'}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-10 col-md-7">
+                <div class="news_desc">
+                    <p class="news_desc_p">{{news_item.text}}</p>
+                    <div class="news_desc_link"><a href="#/{{news_item.id}}">Read More</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
