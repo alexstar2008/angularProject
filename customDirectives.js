@@ -5,7 +5,7 @@ customDirectives.directive('countTo', ['$timeout', '$document', function ($timeo
         replace: true,
         scope: true,
         template: ' <div class="stats_item" >' +
-            '<div class="stats_img"><img src="{{imgSrc}}" /></div>' +
+            '<div class="stats_img"><img ng-src="{{imgSrc}}" alt={{itemTitle}} /></div>' +
             '<div class="stats_counter">{{counterText}}</div>' +
             '<span class="stats_title">{{itemTitle}}</span>' +
             '</div>',

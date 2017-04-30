@@ -26,7 +26,7 @@
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
             <div class="team_member_wrapper">
                 <div class="img_wrapper">
-                    <img src="{{memberInfo.img}}" alt="" />
+                    <img ng-src="{{memberInfo.img}}" alt="{{memberInfo.name}}" />
                     <div class="img_desc">
                         <h3 class="img_name">{{memberInfo.name}}</h3>
                         <h4 class="img_job">{{memberInfo.job}}</h4>
@@ -216,7 +216,7 @@
             <div class="row">
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"><i class="fa fa-bars"></i></button>
-                    <a class="navbar-brand " href="#"><img src="imgs/logo.png" alt="logo"></a>
+                    <a class="navbar-brand " href="#homeLink" du-smooth-scroll><img src="imgs/logo.png" alt="logo"></a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right ">
@@ -250,25 +250,25 @@
             <div class="row services_types">
                 <div class="col-md-1 col-sm-1 col-sm-offset-1 col-xs-3 col-xs-offset-0 col-md-offset-1 no_padding" ng-click="changeActiveService(1,'web design')">
                     <div class="services_icon">
-                        <img src="imgs/icons/desktop.png" />
+                        <img src="imgs/icons/desktop.png" alt="desktop" />
                     </div>
                     <div class="services_types_title">web design</div>
                 </div>
                 <div class="col-md-1 col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0   col-md-offset-2 no_padding" ng-click="changeActiveService(2,'graphic design')">
                     <div class="services_icon">
-                        <img src="imgs/icons/pencil.png" />
+                        <img src="imgs/icons/pencil.png"  alt="pencil" />
                     </div>
                     <div class="services_types_title">graphic design</div>
                 </div>
                 <div class="col-md-1 col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0  col-md-offset-2 no_padding" ng-click="changeActiveService(3,'programming')">
                     <div class="services_icon">
-                        <img src="imgs/icons/programming.png" />
+                        <img src="imgs/icons/programming.png" alt="programming" />
                     </div>
                     <div class="services_types_title">programming</div>
                 </div>
                 <div class="col-md-1  col-sm-1 col-sm-offset-2 col-xs-3 col-xs-offset-0  col-md-offset-2 no_padding" ng-click="changeActiveService(4,'photography')">
                     <div class="services_icon">
-                        <img src="imgs/icons/photo.png" />
+                        <img src="imgs/icons/photo.png" alt="photo" />
                     </div>
                     <div class="services_types_title">photography</div>
                 </div>
@@ -321,7 +321,7 @@
                 <div class="phones_group">
                     <div class="col-xs-8 col-xs-offset-2 col-sm-offset-0 col-sm-6 col-md-6 col-md-offset-0 col-lg-offset-1 col-lg-5 ">
                         <div class="phones_img">
-                            <img src="imgs/phones.png" />
+                            <img src="imgs/phones.png"  alt="phones"/>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -367,7 +367,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-2 no_margin_padding" ng-repeat="photo in filterPhotos| portfolioFilter : currentFilter">
                     <div class="portfolio_item" ng-mouseenter="showImageData($event,photo)" ng-mouseleave="hideData($event)">
-                        <img src="{{photo.img}}" />
+                        <img ng-src="{{photo.img}}" alt="photo" />
                     </div>
                 </div>
             </div>
