@@ -10,13 +10,13 @@
     <script src="Libraries/bootstrap.min.js"></script>
     <script src="Libraries/angular.js"></script>
     <script src="Libraries/angular_route.js"></script>
-    
+
 
     <link rel="stylesheet" href="Libraries/bootstrap.css" />
     <link rel="stylesheet" href="style.css" />
     <link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    
+
     <script src="Libraries/angular-scroll.js"></script>
     <script src="customDirectives.js"></script>
     <script src="customFilters.js"></script>
@@ -121,7 +121,7 @@
                 var element = event.currentTarget;
                 element.removeChild(element.lastElementChild);
             }
-           
+
             //active_service
             $scope.serviceActive = 'web design';
             $scope.changeActiveService = function (itemNum,typeActive) {
@@ -159,7 +159,7 @@
                 console.log(err.message);
             }
             $http.get('data.json').then(success, error);
-            
+
             //Form
             $scope.nameRegex = /^[a-zA-Z]+$/;
             $scope.emailRegex = /^[a-zA-Z0-9_.@]+$/;
@@ -335,8 +335,8 @@
                                 Quod<br /> congue ea ius, nisl aperiri sit ut.
 
                             </p>
-                            <div class="phone_content_btn"> 
-                                <a href="#addressLink" du-smooth-scroll >
+                            <div class="phone_content_btn">
+                                <a href="#contactLink" du-smooth-scroll offset="100" >
                                     <input type="button" value="get now" />
                                 </a>
                             </div>
@@ -416,7 +416,7 @@
         </div>
     </section>
 
-    
+
     <!-- Contact_Form -->
     <section class="contact_us" id="contactLink">
         <head-section head-title="Contact Us" white-text>
@@ -461,10 +461,9 @@
             </form>
         </div>
     </section>
-    
+
     <!-- Address -->
     <section class="map">
-        <a name="addressLink"></a>
         <div class="container">
             <div class="row">
                 <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4  ">
