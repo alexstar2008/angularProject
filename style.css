@@ -528,7 +528,7 @@ header {
 .news_date_alone{
       line-height:49px;
     color:#00e1ff;
-    font-size:3em;
+    font-size:2.5em;
     letter-spacing:4px;
     text-align:center;
 }
@@ -556,7 +556,7 @@ header {
     }
     .news_date_alone{
           margin-top:25px;
-         font-size:2em;
+         font-size:1.8em;
     }
 }
 
